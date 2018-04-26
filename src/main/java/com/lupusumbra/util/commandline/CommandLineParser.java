@@ -85,16 +85,29 @@ public final class CommandLineParser {
         this.usage(this::defaultUsagePrinter);
     }
 
+    /**
+     * sets the usage key
+     * @param key the usage key
+     */
     private void setUsageKey(String key) {
         if(isTokenShortKey(key)) this.usageKeyShort = stripOptionPrefix(key);
         else this.getUsageKeyLong = stripOptionPrefix(key);
     }
 
+    /**
+     * defines the usage processor
+     * @param usage usage message consumer
+     * @return the {@link CommandLineParser}
+     */
     public CommandLineParser usage(Consumer<String> usage) {
         this.usage = usage;
         return this;
     }
 
+    /**
+     * the default usage printer
+     * @param message the usage message
+     */
     public void defaultUsagePrinter(String message) {
         System.err.println(message);
     }

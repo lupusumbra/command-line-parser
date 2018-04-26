@@ -9,13 +9,24 @@ import java.lang.reflect.Field;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-
+/**
+ * The OptionParser class is responsible for managing the field level interactions of the CommandLineParser, as well as tracking some additional metadata
+ */
 public class OptionParser {
+    //the field the OptionParser is bound to
     public final Field field;
+    //the field type
     public final Class fieldType;
+    //the annotation associated with the field
     public final Option annotation;
+    //a metadata flag which indicates that the option was provided on the command-line
     private boolean provided;
 
+    /**
+     * Instantiate an {@link OptionParser}
+     * @param field the field
+     * @param annotation the annotation
+     */
     OptionParser(Field field, Option annotation) {
         this.field = field;
         this.fieldType = field.getType();
@@ -23,16 +34,29 @@ public class OptionParser {
         this.provided = false;
     }
 
+    /**
+     * check if the option was provided
+     * @return true if the option was provided
+     */
     public boolean provided() {
         return this.provided;
     }
 
+    /**
+     * Generates the info message for this option
+     * @return the info message
+     */
     public String toString() {
         final String optsText = CommandLineParser.formatOptions(this.annotation.shortKey(), this.annotation.longKey());
         final String descText = CommandLineParser.formatSentence(this.annotation.description(), true);
         return String.format("%s  %s", optsText, descText);
     }
 
+    /**
+     * process a command-line argument
+     * @param data the command data object
+     * @param value the value
+     */
     public void process(final Object data, String value) {
         if (this.fieldType.equals(Boolean.class) || this.fieldType.equals(boolean.class)) value = "true";
         if (value == null || value.isEmpty()) value = this.annotation.defaultValue();
@@ -40,6 +64,12 @@ public class OptionParser {
         this.provided = true;
     }
 
+    /**
+     * Assign a value to a field
+     * @param data the command data object
+     * @param field the target field
+     * @param value the value to assign
+     */
     private static void setValue(Object data, Field field, String value) {
         final Class<?> type = field.getType();
         try {

@@ -1,0 +1,22 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+group 'com.lupusumbra.util'
+version '0.0.1'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+}
